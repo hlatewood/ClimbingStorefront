@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Basket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Climbing Gear Shop</a>
+        <a href="/basket">Basket</a>
+    </nav>
+
+    <div class="container">
+        <h1>Your Basket</h1>
+
+        {% if items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price each</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>£{{ "%.2f"|format(item.product.price) }}</td>
+                    <td>
+                        <a href="{{ url_for('decrease_item', techId=item.product.id)}}" class="btn btn-outline">-</a>
+                        {{ item.qty }}
+                        <a href="{{ url_for('increase_item', techId=item.product.id) }}" class="btn btn-outline">+</a>
+                    </td>
+                    <td>£{{ "%.2f"|format(item.subtotal) }}</td>
+                    <td><a href="{{ url_for('remove_from_basket', techId=item.product.id) }}" class="btn btn-danger">Remove</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td><strong>£{{ "%.2f"|format(total) }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <br>
+        <a href="/" class="btn btn-outline">Continue Shopping</a>
+        <a href="/checkout" class="btn btn-dark">Proceed to Checkout</a>
+
+        {% else %}
+        <p>Your basket is empty.</p>
+        <a href="/" class="btn btn-dark">Go Shopping</a>
+        {% endif %}
+    </div>
+</body>
+</html>

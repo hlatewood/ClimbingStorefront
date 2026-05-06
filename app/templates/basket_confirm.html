@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<head>
+    <title>Added to Basket</title>
+</head>
+<body>
+    <h1>Success!</h1>
+    <p>You have added <strong>{{ quantity }}</strong> x <strong>{{ product.name }}</strong> to your basket.</p>
+    <p>Price each: {{ product.price }}</p>
+    <br>
+    <a href="{{ url_for('galleryPage') }}">Continue Shopping</a>
+</body>
+</html>

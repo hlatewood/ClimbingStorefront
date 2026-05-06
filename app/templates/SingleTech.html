@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ technology.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">🧗 Climbing Gear Shop</a>
+        <a href="/basket">🛒 Basket</a>
+    </nav>
+
+    <div class="container">
+        <!-- Product details row -->
+        <div style="display: flex; gap: 40px; align-items: flex-start;">
+            <img src="{{ url_for('static', filename=technology.image) }}" 
+                 alt="{{ technology.name }}" 
+                 style="width: 400px; height: 400px; object-fit: contain; background: white; border-radius: 8px; padding: 10px;">
+
+            <div>
+                <h1>{{ technology.name }}</h1>
+                <p style="color: #656464;">{{ technology.brand }}</p>
+                <h3>£{{ "%.2f"|format(technology.price) }}</h3>
+                <p>{{ technology.description }}</p>
+                <p> <strong>Eco impact:</strong> {{ technology.eco_impact }} kg CO₂</p>
+
+                <form action="{{ url_for('add_to_cart', techId=techId) }}" method="POST">
+                    <label>How many would you like to add?</label>
+                    <select name="quantity" style="width: auto;">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <br><br>
+                    <button type="submit" class="btn btn-dark">Add to Basket</button>
+                </form>
+                <br>
+                <a href="/" class="btn btn-outline">Back to Gallery</a>
+            </div>
+        </div>
+
+        <!-- Reviews section below -->
+        <hr style="margin: 30px 0;">
+        <h3>Reviews</h3>
+
+        {% if reviews %}
+            {% for review in reviews %}
+            <div style="background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 6px;">
+                <strong>Rating: {{ '⭐' * review.rating }}</strong>
+                <p>{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet — be the first!</p>
+        {% endif %}
+
+        <h4>Leave a Review</h4>
+        <form action="{{ url_for('add_review', techId=techId) }}" method="POST">
+            <label>Rating:</label><br>
+            <select name="rating" style="width: auto; margin-bottom: 10px;">
+                <option value="1">⭐ 1</option>
+                <option value="2">⭐⭐ 2</option>
+                <option value="3">⭐⭐⭐ 3</option>
+                <option value="4">⭐⭐⭐⭐ 4</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5</option>
+            </select><br>
+            <label>Comment:</label><br>
+            <textarea name="comment" rows="3" style="width: 100%; max-width: 500px; margin-bottom: 10px;" required></textarea><br>
+            <button type="submit" class="btn btn-dark">Submit Review</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Climbing Gear Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Climbing Gear Shop</a>
+        <a href="/basket">Basket</a>
+    </nav>
+
+    <div class="container">
+        <h1>All Products</h1>
+
+        <form method="GET" action="/">
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort" style="width:auto;" onchange="this.form.submit()">
+                <option value="name" {% if sort == 'name' %}selected{% endif %}>Name</option>
+                <option value="price" {% if sort == 'price' %}selected{% endif %}>Price</option>
+                <option value="eco" {% if sort == 'eco' %}selected{% endif %}>Eco Impact</option>
+            </select>
+        </form>
+
+        <form method="GET" action="/" style="margin-bottom: 15px;">
+            <input type="text" name="search" placeholder="Search products..." 
+                value="{{ search }}" style="width: 300px; display: inline;">
+            <button type="submit" class="btn btn-dark">Search</button>
+            {% if search %}
+                <a href="/" class="btn btn-outline">Clear</a>
+            {% endif %}
+        </form>
+    
+        <br>
+        <div class="product-grid">
+        {% for tech in technologies %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename=tech.image) }}" alt="{{ tech.name }}">
+                <h3>{{ tech.name }}</h3>
+                <p>{{ tech.brand }}</p>
+                <p><strong>£{{ "%.2f"|format(tech.price) }}</strong></p>
+                <p> {{ tech.eco_impact }} kg CO₂</p>
+                <a href="{{ url_for('singleProductPage', techId=tech.id) }}">View Product</a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

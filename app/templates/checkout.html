@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Climbing Gear Shop</a>
+        <a href="/basket">Basket</a>
+    </nav>
+
+    <div class="container">
+        <h1>Checkout</h1>
+
+        {% if errors %}
+        <div class="error">
+            <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form action="/checkout" method="POST" style="max-width: 500px;">
+            <h3>Personal Details</h3>
+            <label>Full Name:</label>
+            <input type="text" name="name" value="{{ request.form.get('name', '') }}" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ request.form.get('email', '') }}" required>
+
+            <h3>Payment Details</h3>
+            <label>Card Number (16 digits):</label>
+            <input type="text" name="card_number" maxlength="16" value="{{ request.form.get('card_number', '') }}" required>
+
+            <label>Expiry Date (MM/YY):</label>
+            <input type="text" name="expiry" placeholder="MM/YY" value="{{ request.form.get('expiry', '') }}" required>
+
+            <label>CVV (3 digits):</label>
+            <input type="text" name="cvv" maxlength="3" value="{{ request.form.get('cvv', '') }}" required>
+
+            <br>
+            <button type="submit" class="btn btn-dark">Place Order</button>
+            <a href="/basket" class="btn btn-outline">Back to Basket</a>
+        </form>
+    </div>
+</body>
+</html>
